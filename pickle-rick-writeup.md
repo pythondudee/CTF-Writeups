@@ -2,7 +2,7 @@
 
 **Target:** `10.48.177.187`
 **Objective:** Find all 3 Rick and Morty-themed ingredients
-**Result:** ✅ All 3 ingredients captured
+**Result:** All 3 ingredients captured
 
 ---
 
@@ -134,8 +134,3 @@ left in places that "shouldn't" be checked (HTML comments, `robots.txt`),
 and a command filter that blocks a *literal string* instead of actually
 restricting execution, which is trivially bypassed by breaking the string up
 in a way the shell will still reassemble.
-
----
-
-*Raw scan output (Nmap + Gobuster) available in the original `.txt` exports
-if you want to cross-reference exact byte sizes / status codes.*
