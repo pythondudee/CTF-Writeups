@@ -1,8 +1,8 @@
-# TryHackMe: Heartbleed — Writeup
+# TryHackMe: Heartbleed - Writeup
 
 ## Room Overview
 
-This room walks through exploiting CVE-2014-0160, better known as Heartbleed — the OpenSSL bug that made headlines back in 2014. The vulnerability lives in the TLS heartbeat extension, which is supposed to be a simple keep-alive mechanism: a client sends a small payload and asks the server to echo it back. The bug is that the server trusts the length field the client sends without checking it against the actual payload size. Send a 1-byte payload but claim it's 64KB, and the server happily replies with your 1 byte plus up to 64KB of whatever's sitting next to it in memory. No authentication required, no exploitation of memory corruption in the classic sense — just the server leaking its own RAM because nobody validated an integer.
+This room walks through exploiting CVE-2014-0160, better known as Heartbleed, the OpenSSL bug that made headlines back in 2014. The vulnerability lives in the TLS heartbeat extension, which is supposed to be a simple keep-alive mechanism: a client sends a small payload and asks the server to echo it back. The bug is that the server trusts the length field the client sends without checking it against the actual payload size. Send a 1-byte payload but claim it's 64KB, and the server happily replies with your 1 byte plus up to 64KB of whatever's sitting next to it in memory. No authentication required, no memory corruption in the classic sense, just the server leaking its own RAM because nobody validated an integer.
 
 Target for this room: `10.48.118.139:443`.
 
@@ -22,13 +22,13 @@ msf6 auxiliary(scanner/ssl/openssl_heartbleed) > set RHOSTS 10.48.118.139
 msf6 auxiliary(scanner/ssl/openssl_heartbleed) > set RPORT 443
 ```
 
-By default the module's action is `SCAN`, which just tells you whether the target is vulnerable — it doesn't actually pull any memory. Since I wanted the actual leaked data, not just a yes/no, I flipped it over to `DUMP`:
+By default the module's action is `SCAN`, which just tells you whether the target is vulnerable. It doesn't actually pull any memory. Since I wanted the actual leaked data, not just a yes/no, I flipped it over to `DUMP`:
 
 ```
 msf6 auxiliary(scanner/ssl/openssl_heartbleed) > set ACTION DUMP
 ```
 
-Also bumped `LEAK_COUNT` up to 10 so each run grabs multiple heartbeat leaks instead of just one — figured it'd improve my odds of catching something useful on the first pass rather than spamming `run` a dozen times:
+Also bumped `LEAK_COUNT` up to 10 so each run grabs multiple heartbeat leaks instead of just one. Figured it'd improve my odds of catching something useful on the first pass rather than spamming `run` a dozen times:
 
 ```
 msf6 auxiliary(scanner/ssl/openssl_heartbleed) > set LEAK_COUNT 10
@@ -70,7 +70,7 @@ msf6 auxiliary(scanner/ssl/openssl_heartbleed) > run
 [*] Auxiliary module execution completed
 ```
 
-First run pulled back 655,350 bytes — way more than I expected to need. Metasploit dumps everything into a loot file rather than printing 600+ KB into the console, which makes sense.
+First run pulled back 655,350 bytes, way more than I expected to need. Metasploit dumps everything into a loot file rather than printing 600+ KB into the console, which makes sense.
 
 ## Digging Through the Leak
 
@@ -86,7 +86,7 @@ And there it was, sitting in the leaked heap memory just like it would be if thi
 THM{sSl-Is-BaD}
 ```
 
-Didn't even need a second `run` — one 655KB leak was enough to catch it on the first try.
+Didn't even need a second `run`. One 655KB leak was enough to catch it on the first try.
 
 ## Flag
 
@@ -96,6 +96,6 @@ THM{sSl-Is-BaD}
 
 ## Takeaways
 
-- Heartbleed is a great example of how a single missing bounds check can turn into a full memory disclosure vuln, no auth needed. It's not fancy — it's just nobody validated that the claimed payload length matched the real one.
-- The `DUMP` action vs `SCAN` distinction in the Metasploit module matters — `SCAN` will confirm the vuln exists but won't give you anything to actually read.
-- Real-world impact of this bug in 2014 was severe specifically because heap memory on a busy TLS server is a grab bag — private keys, session cookies, even plaintext credentials could be sitting right next to the heartbeat handler's buffer, and there's no way to control *what* gets leaked, just that something does.
+- Heartbleed is a great example of how a single missing bounds check can turn into a full memory disclosure vuln, no auth needed. It's not fancy, it's just that nobody validated the claimed payload length against the real one.
+- The `DUMP` action vs `SCAN` distinction in the Metasploit module matters. `SCAN` will confirm the vuln exists but won't give you anything to actually read.
+- Real-world impact of this bug in 2014 was severe specifically because heap memory on a busy TLS server is a grab bag. Private keys, session cookies, even plaintext credentials could be sitting right next to the heartbeat handler's buffer, and there's no way to control what gets leaked, just that something does.
