@@ -1,4 +1,4 @@
-# TryHackMe: Recruit — Penetration Test Report
+# TryHackMe: Recruit; Penetration Test Report
 
 **Analyst:** pythondudee
 **Target:** 10.48.151.78
