@@ -1,6 +1,6 @@
 # TryHackMe: Recruit — Penetration Test Report
 
-**Analyst:** pythondudee\
+**Analyst:** Pythondudee\
 **Target:** 10.48.151.78\
 **Room:** Recruit (TryHackMe)\
 **Objective:** Full compromise via web exploitation, capturing all flags
