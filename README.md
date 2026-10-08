@@ -14,16 +14,8 @@ Writeups are sorted by platform, one folder each. Every writeup covers:
 
 I'll keep adding more as I go.
 
-## ⚠️ Spoilers
-
-Try the challenge yourself first! Only peek if you're really stuck, that's how you actually learn.
-
-Everything here is for learning, on platforms where hacking is allowed.
-
 ## 📬 Find me
 
-I'm **pythondudee** on pretty much every platform, so just look me up.
-
+📸 Instagram: [@pythondudeee](https://instagram.com/pythondudeee)
+💬 Discord: pythondudee
 Spotted a mistake or know a better way to solve something? Open an issue, I'd love to learn.
-
-⭐ A star would be cool if this helped you!
