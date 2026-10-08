@@ -36,7 +36,7 @@ The login page linked to an "Access API" page (`api.php`) documenting a file-fet
 /file.php?cv=<URL>
 ```
 
-![API endpoint disclosure](screenshots/recruit-ctf/01-api-disclosure.png)
+![API endpoint disclosure](./screenshots/recruit-ctf/01-api-disclosure.png)
 
 ---
 
@@ -46,7 +46,7 @@ The login page linked to an "Access API" page (`api.php`) documenting a file-fet
 
 A listener was set up on the attacker VPN IP to test whether `file.php` performed server-side requests.
 
-![Attacker IP](screenshots/recruit-ctf/02-attacker-ip.png)
+![Attacker IP](./screenshots/recruit-ctf/02-attacker-ip.png)
 
 The endpoint did make outbound requests, but they timed out. This ruled out external SSRF but suggested internal file access was possible.
 
@@ -54,7 +54,7 @@ The endpoint did make outbound requests, but they timed out. This ruled out exte
 
 Testing local file inclusion with common paths:
 
-![SSRF test](screenshots/recruit-ctf/03-ssrf-test.png)
+![SSRF test](./screenshots/recruit-ctf/03-ssrf-test.png)
 
 Attempting `/etc/passwd`:
 ```
@@ -85,13 +85,13 @@ $dbname = "recruit_db";
 
 ### 3.2 Invalid login attempts
 
-![Login invalid](screenshots/recruit-ctf/04-login-invalid.png)
+![Login invalid](./screenshots/recruit-ctf/04-login-invalid.png)
 
 Initial login attempts with the disclosed credentials failed on the web interface, suggesting the credentials were for database access rather than the web application.
 
 ### 3.3 FAQ restrictions discovered
 
-![FAQ restrictions](screenshots/recruit-ctf/05-faq-restrictions.png)
+![FAQ restrictions](./screenshots/recruit-ctf/05-faq-restrictions.png)
 
 The FAQ page revealed file upload restrictions and path traversal mitigations, hinting that input validation was in place.
 
@@ -101,19 +101,19 @@ The FAQ page revealed file upload restrictions and path traversal mitigations, h
 
 ### 4.1 Initial bypass attempt
 
-![Bypass attempt](screenshots/recruit-ctf/06-bypass-attempt.png)
+![Bypass attempt](./screenshots/recruit-ctf/06-bypass-attempt.png)
 
 SQL injection was tested on the login form using basic payloads. Initial attempts to bypass authentication were blocked.
 
 ### 4.2 Access denied response
 
-![Access denied](screenshots/recruit-ctf/07-access-denied.png)
+![Access denied](./screenshots/recruit-ctf/07-access-denied.png)
 
 The application enforced strict access controls, returning "Access Denied" for unauthorized users.
 
 ### 4.3 Apache error enumeration
 
-![Apache 404](screenshots/recruit-ctf/08-apache-404.png)
+![Apache 404](./screenshots/recruit-ctf/08-apache-404.png)
 
 Directory traversal attempts revealed Apache's default 404 error page, providing information disclosure about the server.
 
@@ -125,7 +125,7 @@ Directory traversal attempts revealed Apache's default 404 error page, providing
 
 After gaining initial access to the application through SQLi, the HR module was discovered:
 
-![HR flag](screenshots/recruit-ctf/09-hr-flag.png)
+![HR flag](./screenshots/recruit-ctf/09-hr-flag.png)
 
 First flag captured: `Flag{...}`
 
@@ -133,7 +133,7 @@ First flag captured: `Flag{...}`
 
 To determine the number of columns in the target SQL query:
 
-![ORDER BY test](screenshots/recruit-ctf/10-orderby-test.png)
+![ORDER BY test](./screenshots/recruit-ctf/10-orderby-test.png)
 
 Testing revealed **5 columns** in the query.
 
@@ -141,7 +141,7 @@ Testing revealed **5 columns** in the query.
 
 Crafting a UNION SELECT payload to extract data:
 
-![UNION SELECT](screenshots/recruit-ctf/11-union-select.png)
+![UNION SELECT](./screenshots/recruit-ctf/11-union-select.png)
 
 Payload:
 ```sql
@@ -152,7 +152,7 @@ Payload:
 
 Extracting table names from `information_schema`:
 
-![Tables found](screenshots/recruit-ctf/12-tables-found.png)
+![Tables found](./screenshots/recruit-ctf/12-tables-found.png)
 
 Key tables identified:
 - `users`
@@ -164,7 +164,7 @@ Key tables identified:
 
 Enumerating columns in the `users` table:
 
-![Columns found](screenshots/recruit-ctf/13-columns-found.png)
+![Columns found](./screenshots/recruit-ctf/13-columns-found.png)
 
 Columns:
 - `id`
@@ -177,7 +177,7 @@ Columns:
 
 Extracting user credentials from the database:
 
-![Credentials dumped](screenshots/recruit-ctf/14-creds-dumped.png)
+![Credentials dumped](./screenshots/recruit-ctf/14-creds-dumped.png)
 
 Dumped credentials:
 ```
@@ -194,7 +194,7 @@ user | user_pass | user
 
 Using admin credentials obtained via SQL injection to log in and extract the final flag:
 
-![Admin flag](screenshots/recruit-ctf/15-admin-flag.png)
+![Admin flag](./screenshots/recruit-ctf/15-admin-flag.png)
 
 Final flag: `Flag{...}`
 
