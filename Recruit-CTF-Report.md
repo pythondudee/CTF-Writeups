@@ -9,7 +9,7 @@
 
 ## Summary
 
-The Recruit web application was compromised through chained vulnerabilities: an insecure file-read endpoint (LFI) used to leak application source code and hardcoded credentials, followed by SQL injection and privilege escalation to a full administrative compromise.
+The Recruit web application was compromised through chained vulnerabilities: an insecure file-read endpoint (LFI) used to leak application source code and hardcoded credentials, followed by SQL injection to extract sensitive data from the backend database. Multiple attack vectors were chained together to achieve full system compromise and flag capture.
 
 ---
 
